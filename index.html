@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sayt 2</title>
+  <style>
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{
+      margin:0;
+      background:#fff;
+      font-family:Arial,sans-serif;
+      display:flex;
+      justify-content:center;
+      align-items:flex-start;
+      min-height:100vh;
+    }
+    .mt-page{
+      width:320px;
+      background:#ffffff;
+      position:relative;
+      overflow:hidden;
+    }
+    .mt-section{
+      width:320px;
+      position:relative;
+      background:#ffffff;
+      overflow:hidden;
+      border-bottom:1px solid #fff;
+    }
+  </style>
+</head>
+<body>
+  <div class="mt-page">
+    <div class="mt-section" style="height:560px;background:#ffffff">
+      <div style="position:absolute;left:30px;top:94px;width:260px;font-size:18px;text-align:center;color:#111827;font-family:Arial,sans-serif;">Yangi matn</div>
+    </div>
+
+    <div class="mt-section" style="height:560px;background:#ffffff">
+      <div style="position:absolute;left:40px;top:40px;width:260px;font-size:18px;text-align:left;color:#111827;font-family:Arial,sans-serif;">Yangi matn</div>
+
+<div data-mt-timer="1" data-mt-hours="0" data-mt-minutes="5" data-mt-seconds="0" style="position:absolute;left:156px;top:271px;font-size:20px;color:#111827;font-family:Arial,system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;">00:00</div>
+    </div>
+  </div>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  var page = document.querySelector(".mt-page");
+  if (page) {
+    var baseWidth = 320;
+    function mtAutoscale() {
+      var screenWidth = window.innerWidth || document.documentElement.clientWidth;
+      var zoom = 1;
+      if (screenWidth <= 480) {
+        zoom = screenWidth / baseWidth;
+      }
+      page.style.transformOrigin = "top center";
+      page.style.transform = "scale(" + zoom + ")";
+      document.body.style.height = (page.offsetHeight * zoom) + "px";
+    }
+    mtAutoscale();
+    window.addEventListener("resize", mtAutoscale);
+  }
+  var timers = document.querySelectorAll("[data-mt-timer]");
+  timers.forEach(function (el) {
+    var hours = parseInt(el.getAttribute("data-mt-hours")) || 0;
+    var minutes = parseInt(el.getAttribute("data-mt-minutes")) || 0;
+    var seconds = parseInt(el.getAttribute("data-mt-seconds")) || 0;
+    var total = hours * 3600 + minutes * 60 + seconds;
+    function formatTime(t) {
+      var h = Math.floor(t / 3600);
+      var m = Math.floor((t % 3600) / 60);
+      var s = t % 60;
+      if (h > 0) {
+        return String(h).padStart(2, "0") + ":" + String(m).padStart(2, "0") + ":" + String(s).padStart(2, "0");
+      }
+      return String(m).padStart(2, "0") + ":" + String(s).padStart(2, "0");
+    }
+    if (!total) {
+      el.textContent = "00:00";
+      return;
+    }
+    var remaining = total;
+    el.textContent = formatTime(remaining);
+    var interval = setInterval(function () {
+      remaining--;
+      if (remaining <= 0) {
+        clearInterval(interval);
+        el.textContent = "00:00";
+      } else {
+        el.textContent = formatTime(remaining);
+      }
+    }, 1000);
+  });
+});
+</script>
+</body>
+</html>
